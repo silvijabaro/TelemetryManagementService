@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/telemetry
+    username: root
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+
+server:
+  error:
+    include-message: always
+  port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info,health,metrics
