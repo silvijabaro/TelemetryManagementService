@@ -1,9 +1,14 @@
 package com.logineko.telemetrymanagement.service;
 
-import com.logineko.telemetrymanagement.entity.TractorTelemetry;
+import com.logineko.telemetrymanagement.exception.CSVMappingException;
+import com.logineko.telemetrymanagement.exception.UnsupportedVehicleException;
+import com.logineko.telemetrymanagement.mapper.CSVMapper;
+import com.logineko.telemetrymanagement.model.entity.TractorTelemetry;
+import com.logineko.telemetrymanagement.repository.CombineTelemetryRepository;
 import com.logineko.telemetrymanagement.repository.TractorTelemetryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,12 +19,30 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TelemetryManagementServiceImpl implements TelemetryManagementService {
 
+    public static final String TRACTOR_TELEMETRY = "LD_A";
+    public static final String COMBINE_TELEMETRY = "LD_C";
     private final TractorTelemetryRepository tractorTelemetryRepository;
+
+    private final CombineTelemetryRepository combineTelemetryRepository;
+
+    private final CSVMapper csvMapper;
 
 
     @Override
-    public void importTelemetry(MultipartFile file) {
-        throw new UnsupportedOperationException();
+    public void importTelemetry(MultipartFile file, String fileName) {
+        if (StringUtils.startsWith(fileName, TRACTOR_TELEMETRY)) {
+            List<TractorTelemetry> list;
+            try {
+                list = csvMapper.CSVToTractor(file);
+            } catch (Exception e) {
+                throw new CSVMappingException("Was not able to import telemetry data for Tractor. Exception");
+            }
+            tractorTelemetryRepository.saveAll(list);
+        } else if (StringUtils.startsWith(fileName, COMBINE_TELEMETRY)) {
+
+        } else {
+            throw new UnsupportedVehicleException("Vehicle not supported");
+        }
     }
 
     @Override
