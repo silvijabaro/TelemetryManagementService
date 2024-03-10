@@ -32,26 +32,34 @@ public class TelemetryManagementServiceImpl implements TelemetryManagementServic
     @Override
     public void importTelemetry(MultipartFile file, String fileName) {
         if (StringUtils.startsWith(fileName, TRACTOR_TELEMETRY)) {
-            List<TractorTelemetry> list;
-            try {
-                list = csvMapper.CSVToTractor(file);
-            } catch (Exception e) {
-                log.error("Failed to import telemetry data for Tractor. Exception:", e);
-                throw new CSVMappingException("Was not able to import telemetry data for Tractor");
-            }
-            tractorTelemetryRepository.saveAll(list);
+            importTractorTelemetry(file);
         } else if (StringUtils.startsWith(fileName, COMBINE_TELEMETRY)) {
-            List<CombineTelemetry> list;
-            try {
-                list = csvMapper.CSVToCombine(file);
-            } catch (Exception e) {
-                log.error("Failed to import telemetry data for Tractor. Exception:", e);
-                throw new CSVMappingException("Was not able to import telemetry data for Combine");
-            }
-            combineTelemetryRepository.saveAll(list);
+            importCombineTelemetry(file);
         } else {
             throw new UnsupportedVehicleException("Vehicle not supported");
         }
+    }
+
+    private void importCombineTelemetry(MultipartFile file) {
+        List<CombineTelemetry> list;
+        try {
+            list = csvMapper.CSVToCombine(file);
+        } catch (Exception e) {
+            log.error("Failed to import telemetry data for Combine. Exception:", e);
+            throw new CSVMappingException("Was not able to import telemetry data for Combine");
+        }
+        combineTelemetryRepository.saveAll(list);
+    }
+
+    private void importTractorTelemetry(MultipartFile file) {
+        List<TractorTelemetry> list;
+        try {
+            list = csvMapper.CSVToTractor(file);
+        } catch (Exception e) {
+            log.error("Failed to import telemetry data for Tractor. Exception:", e);
+            throw new CSVMappingException("Was not able to import telemetry data for Tractor");
+        }
+        tractorTelemetryRepository.saveAll(list);
     }
 
     @Override
