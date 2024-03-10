@@ -1,4 +1,4 @@
-package com.logineko.telemetrymanagement.entity;
+package com.logineko.telemetrymanagement.model.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
