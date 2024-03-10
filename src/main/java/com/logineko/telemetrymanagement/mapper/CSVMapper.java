@@ -1,5 +1,6 @@
 package com.logineko.telemetrymanagement.mapper;
 
+import com.logineko.telemetrymanagement.model.entity.CombineTelemetry;
 import com.logineko.telemetrymanagement.model.entity.TractorTelemetry;
 import com.opencsv.bean.CsvToBeanBuilder;
 import org.springframework.stereotype.Service;
@@ -12,10 +13,21 @@ import java.util.List;
 @Service
 public class CSVMapper {
     public List<TractorTelemetry> CSVToTractor(MultipartFile file) throws Exception {
-        Reader reader = new InputStreamReader(file.getInputStream()) ;
+        Reader reader = new InputStreamReader(file.getInputStream());
 
         return new CsvToBeanBuilder<TractorTelemetry>(reader)
                 .withType(TractorTelemetry.class)
+                .withSkipLines(1)
+                .withSeparator(';')
+                .build()
+                .parse();
+    }
+
+    public List<CombineTelemetry> CSVToCombine(MultipartFile file) throws Exception {
+        Reader reader = new InputStreamReader(file.getInputStream());
+
+        return new CsvToBeanBuilder<CombineTelemetry>(reader)
+                .withType(CombineTelemetry.class)
                 .withSkipLines(1)
                 .withSeparator(';')
                 .build()

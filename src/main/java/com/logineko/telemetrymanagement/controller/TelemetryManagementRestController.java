@@ -17,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TelemetryManagementRestController {
 
+    private static final String CSV_EXTENSION = "csv";
     private final TelemetryManagementService telemetryManagementService;
 
     @PostMapping("/import")
@@ -25,7 +26,7 @@ public class TelemetryManagementRestController {
             return ResponseEntity.badRequest().body("No CSV file provided.");
         }
         String fileExtension = FilenameUtils.getExtension(file.getOriginalFilename());
-        if (!".csv".contains(fileExtension.toLowerCase())) {
+        if (!CSV_EXTENSION.equals(fileExtension.toLowerCase())) {
             return ResponseEntity.badRequest().body("Invalid file extension. Expecting CSV file.");
         }
         log.info("Importing telemetry data");
@@ -38,7 +39,7 @@ public class TelemetryManagementRestController {
             @RequestParam String fieldName,
             @RequestParam Object value,
             @RequestParam String operator) {
-        log.info("Filtering vehicles by " + fieldName + operator + value);
+        log.info("Filtering vehicles by {} {} {}", fieldName, operator, value);
         return telemetryManagementService.filterTelemetry(fieldName, value, operator);
     }
 
