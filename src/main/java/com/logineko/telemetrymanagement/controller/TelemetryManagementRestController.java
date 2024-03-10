@@ -1,7 +1,9 @@
 package com.logineko.telemetrymanagement.controller;
 
-import com.logineko.telemetrymanagement.model.entity.TractorTelemetry;
+import com.logineko.telemetrymanagement.model.dto.DataFilter;
+import com.logineko.telemetrymanagement.model.dto.FilteredTelemetry;
 import com.logineko.telemetrymanagement.service.TelemetryManagementService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.io.FilenameUtils;
@@ -34,13 +36,12 @@ public class TelemetryManagementRestController {
         return ResponseEntity.ok("Telemetry data successfully imported.");
     }
 
-    @GetMapping("/filter")
-    public List<TractorTelemetry> filterTelemetry(
-            @RequestParam String fieldName,
-            @RequestParam Object value,
-            @RequestParam String operator) {
-        log.info("Filtering vehicles by {} {} {}", fieldName, operator, value);
-        return telemetryManagementService.filterTelemetry(fieldName, value, operator);
+    @PostMapping("/filter")
+    public ResponseEntity<FilteredTelemetry> filterTelemetry(
+            @RequestBody @Valid List<DataFilter> filter) {
+        log.info("Filtering telemetry data");
+        return ResponseEntity.ok(telemetryManagementService.filterTelemetry(filter));
+
     }
 
 
