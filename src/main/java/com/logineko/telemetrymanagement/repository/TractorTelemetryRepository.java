@@ -1,6 +1,6 @@
 package com.logineko.telemetrymanagement.repository;
 
-import com.logineko.telemetrymanagement.entity.TractorTelemetry;
+import com.logineko.telemetrymanagement.model.entity.TractorTelemetry;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
