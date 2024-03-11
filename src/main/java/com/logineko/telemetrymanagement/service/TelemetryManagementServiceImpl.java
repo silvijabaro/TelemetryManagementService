@@ -4,12 +4,11 @@ import com.logineko.telemetrymanagement.exception.CSVMappingException;
 import com.logineko.telemetrymanagement.exception.UnsupportedVehicleException;
 import com.logineko.telemetrymanagement.mapper.CSVMapper;
 import com.logineko.telemetrymanagement.model.dto.DataFilter;
-import com.logineko.telemetrymanagement.model.dto.FilteredTelemetry;
+import com.logineko.telemetrymanagement.model.dto.FilteredTelemetryResponse;
 import com.logineko.telemetrymanagement.model.entity.CombineTelemetry;
 import com.logineko.telemetrymanagement.model.entity.TractorTelemetry;
 import com.logineko.telemetrymanagement.repository.CombineTelemetryRepository;
 import com.logineko.telemetrymanagement.repository.TractorTelemetryRepository;
-import com.logineko.telemetrymanagement.util.Utils;
 import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -22,6 +21,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static com.logineko.telemetrymanagement.filter.ValidFilters.combineFieldsLowerCase;
+import static com.logineko.telemetrymanagement.filter.ValidFilters.tractorFieldsLowerCase;
+
 @Service
 @Log4j2
 @RequiredArgsConstructor
@@ -30,8 +32,6 @@ public class TelemetryManagementServiceImpl implements TelemetryManagementServic
     public static final String TRACTOR_TELEMETRY = "LD_A";
     public static final String COMBINE_TELEMETRY = "LD_C";
 
-    List<String> lowercaseTractorFields = Utils.getLowerCaseFieldNames(TractorTelemetry.class);
-    List<String> lowercaseCombineFields = Utils.getLowerCaseFieldNames(CombineTelemetry.class);
     private final TractorTelemetryRepository tractorTelemetryRepository;
 
     private final CombineTelemetryRepository combineTelemetryRepository;
@@ -73,9 +73,9 @@ public class TelemetryManagementServiceImpl implements TelemetryManagementServic
     }
 
     @Override
-    public FilteredTelemetry filterTelemetry(List<DataFilter> dataFilter) {
+    public FilteredTelemetryResponse filterTelemetry(List<DataFilter> dataFilter) {
         // Create a new instance of FilteredTelemetry to store the filtered results
-        FilteredTelemetry filteredTelemetry = new FilteredTelemetry();
+        FilteredTelemetryResponse filteredTelemetryResponse = new FilteredTelemetryResponse();
 
         // Lists to store specifications for tractors and combines separately
         List<Specification<TractorTelemetry>> tractorSpecifications = new ArrayList<>();
@@ -88,10 +88,10 @@ public class TelemetryManagementServiceImpl implements TelemetryManagementServic
 
             // Check if the filter field is applicable to tractors/combines and add the specification to the list
             String lowercaseFilterField = filter.getField().toLowerCase();
-            if (lowercaseTractorFields.contains(lowercaseFilterField)) {
+            if (tractorFieldsLowerCase.contains(lowercaseFilterField)) {
                 tractorSpecifications.add(tractorSpecification);
             }
-            if (lowercaseCombineFields.contains(lowercaseFilterField)) {
+            if (combineFieldsLowerCase.contains(lowercaseFilterField)) {
                 combineSpecifications.add(combineSpecification);
             }
         }
@@ -114,10 +114,10 @@ public class TelemetryManagementServiceImpl implements TelemetryManagementServic
                 combineTelemetryRepository.findAll(combinedCombineSpecification) :
                 Collections.emptyList();
 
-        filteredTelemetry.getTractors().addAll(filteredTractorTelemetry);
-        filteredTelemetry.getCombines().addAll(filteredCombineTelemetry);
+        filteredTelemetryResponse.getTractors().addAll(filteredTractorTelemetry);
+        filteredTelemetryResponse.getCombines().addAll(filteredCombineTelemetry);
 
-        return filteredTelemetry;
+        return filteredTelemetryResponse;
     }
 
     private <T> Specification<T> createSpecification(DataFilter filter, Class<T> entityClass) {

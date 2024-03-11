@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class FilteredTelemetry {
+public class FilteredTelemetryResponse {
     private List<TractorTelemetry> tractors;
     private List<CombineTelemetry> combines;
 
-    public FilteredTelemetry() {
+    public FilteredTelemetryResponse() {
         this.tractors = new ArrayList<>();
         this.combines = new ArrayList<>();
     }
