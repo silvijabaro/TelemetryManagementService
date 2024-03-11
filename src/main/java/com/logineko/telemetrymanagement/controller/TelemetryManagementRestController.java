@@ -1,7 +1,7 @@
 package com.logineko.telemetrymanagement.controller;
 
+import com.logineko.telemetrymanagement.filter.FilterService;
 import com.logineko.telemetrymanagement.model.dto.DataFilter;
-import com.logineko.telemetrymanagement.model.dto.FilteredTelemetry;
 import com.logineko.telemetrymanagement.service.TelemetryManagementService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +21,8 @@ public class TelemetryManagementRestController {
 
     private static final String CSV_EXTENSION = "csv";
     private final TelemetryManagementService telemetryManagementService;
+    private final FilterService filterService;
+
 
     @PostMapping("/import")
     public ResponseEntity<?> importTelemetry(@RequestParam("file") MultipartFile file) throws Exception {
@@ -37,12 +39,15 @@ public class TelemetryManagementRestController {
     }
 
     @PostMapping("/filter")
-    public ResponseEntity<FilteredTelemetry> filterTelemetry(
+    public ResponseEntity<?> filterTelemetry(
             @RequestBody @Valid List<DataFilter> filter) {
-        log.info("Filtering telemetry data");
-        return ResponseEntity.ok(telemetryManagementService.filterTelemetry(filter));
-
+        List<String> invalidFields = filterService.validateFilters(filter);
+        if (invalidFields.isEmpty()) {
+            log.info("Filtering telemetry data");
+            return ResponseEntity.ok(telemetryManagementService.filterTelemetry(filter));
+        } else {
+            return ResponseEntity.badRequest().body("Invalid filters for fields: " + invalidFields);
+        }
     }
-
 
 }

@@ -1,5 +1,6 @@
 package com.logineko.telemetrymanagement.controller;
 
+import com.logineko.telemetrymanagement.filter.FilterService;
 import com.logineko.telemetrymanagement.service.TelemetryManagementService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,10 @@ class TelemetryManagementRestControllerTest {
 
     @MockBean
     private TelemetryManagementService telemetryManagementService;
-    
+
+    @MockBean
+    private FilterService filterService;
+
 
     @Test
     void importTelemetry_shouldReturnOk() throws Exception {
