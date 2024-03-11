@@ -2,6 +2,7 @@ package com.logineko.telemetrymanagement.service;
 
 import com.logineko.telemetrymanagement.exception.CSVMappingException;
 import com.logineko.telemetrymanagement.exception.UnsupportedVehicleException;
+import com.logineko.telemetrymanagement.filter.FilterOperation;
 import com.logineko.telemetrymanagement.mapper.CSVMapper;
 import com.logineko.telemetrymanagement.model.dto.DataFilter;
 import com.logineko.telemetrymanagement.model.dto.FilteredTelemetryResponse;
@@ -126,21 +127,20 @@ public class TelemetryManagementServiceImpl implements TelemetryManagementServic
             Predicate predicate = builder.conjunction();
             String lowercaseField = StringUtils.uncapitalize(filter.getField());
 
-            switch (filter.getOperation()) {
-                case "Equals":
+            switch (FilterOperation.fromString(filter.getOperation())) {
+                case EQUALS:
                     predicate = builder.and(predicate, builder.equal(root.get(lowercaseField), filter.getValue()));
                     break;
-                case "LessThan":
+                case LESS_THAN:
                     predicate = builder.and(predicate, builder.lessThan(root.get(lowercaseField), (Comparable) filter.getValue()));
                     break;
-                case "GreaterThan":
+                case GREATER_THAN:
                     predicate = builder.and(predicate, builder.greaterThan(root.get(lowercaseField), (Comparable) filter.getValue()));
                     break;
-                case "Contains":
+                case CONTAINS:
                     predicate = builder.and(predicate, builder.like(root.get(lowercaseField), "%" + filter.getValue() + "%"));
                     break;
             }
-
             return predicate;
         };
     }

@@ -1,5 +1,6 @@
 package com.logineko.telemetrymanagement.model.dto;
 
+import com.logineko.telemetrymanagement.filter.FilterOperation;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
@@ -11,8 +12,7 @@ public class DataFilter {
     private String field;
 
     @Pattern(regexp = "Equals|LessThan|GreaterThan|Contains", message = "Invalid operation")
-    private String operation = "Equals"; // If not provided, Equals is the default operation
+    private String operation = FilterOperation.EQUALS.getValue(); // If not provided, Equals is the default operation
     @NotNull(message = "Value cannot be null")
-
     private Object value;
 }
