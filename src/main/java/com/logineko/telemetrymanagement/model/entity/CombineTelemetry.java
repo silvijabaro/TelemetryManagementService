@@ -1,5 +1,6 @@
 package com.logineko.telemetrymanagement.model.entity;
 
+import com.logineko.telemetrymanagement.mapper.util.BooleanConverter;
 import com.logineko.telemetrymanagement.mapper.util.DoubleConverter;
 import com.logineko.telemetrymanagement.mapper.util.IntegerConverter;
 import com.opencsv.bean.CsvBindByPosition;
@@ -32,17 +33,17 @@ public class CombineTelemetry {
     @CsvBindByPosition(position = 1)
     private String serialNumber;
 
-    @CsvBindByPosition(position = 2)
-    private String gpsLongitude;
+    @CsvCustomBindByPosition(position = 2, converter = DoubleConverter.class)
+    private Double gpsLongitude;
 
-    @CsvBindByPosition(position = 3)
-    private String gpsLatitude;
+    @CsvCustomBindByPosition(position = 3, converter = DoubleConverter.class)
+    private Double gpsLatitude;
 
-    @CsvBindByPosition(position = 4)
+    @CsvCustomBindByPosition(position = 4, converter = DoubleConverter.class)
     private Double totalWorkingHoursCounter;
 
-    @CsvBindByPosition(position = 5)
-    private String groundSpeed;
+    @CsvCustomBindByPosition(position = 5, converter = DoubleConverter.class)
+    private Double groundSpeed;
 
     @CsvCustomBindByPosition(position = 6, converter = IntegerConverter.class)
     private Integer engineSpeed;
@@ -59,14 +60,14 @@ public class CombineTelemetry {
     @CsvCustomBindByPosition(position = 10, converter = IntegerConverter.class)
     private Integer rotorStrawWalkerSpeed;
 
-    @CsvBindByPosition(position = 11)
-    private String separationLosses;
+    @CsvCustomBindByPosition(position = 11, converter = DoubleConverter.class)
+    private Double separationLosses;
 
-    @CsvBindByPosition(position = 12)
-    private String sieveLosses;
+    @CsvCustomBindByPosition(position = 12, converter = DoubleConverter.class)
+    private Double sieveLosses;
 
-    @CsvBindByPosition(position = 13)
-    private String chopper;
+    @CsvCustomBindByPosition(position = 13, converter = BooleanConverter.class)
+    private Boolean chopper;
 
     @CsvCustomBindByPosition(position = 14, converter = DoubleConverter.class)
     private Double dieselTankLevel;
@@ -74,8 +75,8 @@ public class CombineTelemetry {
     @CsvCustomBindByPosition(position = 15, converter = IntegerConverter.class)
     private Integer numberOfPartialWidths;
 
-    @CsvBindByPosition(position = 16)
-    private String frontAttachmentOnOff;
+    @CsvCustomBindByPosition(position = 16, converter = BooleanConverter.class)
+    private Boolean frontAttachmentOnOff;
 
     @CsvCustomBindByPosition(position = 17, converter = IntegerConverter.class)
     private Integer maxNumberOfPartialWidths;
@@ -83,14 +84,14 @@ public class CombineTelemetry {
     @CsvCustomBindByPosition(position = 18, converter = IntegerConverter.class)
     private Integer feedRakeSpeed;
 
-    @CsvBindByPosition(position = 19)
-    private String workingPosition;
+    @CsvCustomBindByPosition(position = 19, converter = BooleanConverter.class)
+    private Boolean workingPosition;
 
-    @CsvBindByPosition(position = 20)
-    private String grainTankUnloading;
+    @CsvCustomBindByPosition(position = 20, converter = BooleanConverter.class)
+    private Boolean grainTankUnloading;
 
-    @CsvBindByPosition(position = 21)
-    private String mainDriveStatus;
+    @CsvCustomBindByPosition(position = 21, converter = BooleanConverter.class)
+    private Boolean mainDriveStatus;
 
     @CsvCustomBindByPosition(position = 22, converter = IntegerConverter.class)
     private Integer concavePosition;
@@ -101,35 +102,35 @@ public class CombineTelemetry {
     @CsvCustomBindByPosition(position = 24, converter = IntegerConverter.class)
     private Integer lowerSievePosition;
 
-    @CsvBindByPosition(position = 25)
-    private String grainTank70;
+    @CsvCustomBindByPosition(position = 25, converter = BooleanConverter.class)
+    private Boolean grainTank70;
 
-    @CsvBindByPosition(position = 26)
-    private String grainTank100;
+    @CsvCustomBindByPosition(position = 26, converter = BooleanConverter.class)
+    private Boolean grainTank100;
 
-    @CsvBindByPosition(position = 27)
-    private String grainMoistureContent;
+    @CsvCustomBindByPosition(position = 27, converter = DoubleConverter.class)
+    private Double grainMoistureContent;
 
-    @CsvBindByPosition(position = 28)
-    private String throughput;
+    @CsvCustomBindByPosition(position = 28, converter = DoubleConverter.class)
+    private Double throughput;
 
-    @CsvBindByPosition(position = 29)
-    private String radialSpreaderSpeed;
+    @CsvCustomBindByPosition(position = 29, converter = IntegerConverter.class)
+    private Integer radialSpreaderSpeed;
 
     @CsvCustomBindByPosition(position = 30, converter = IntegerConverter.class)
     private Integer grainInReturns;
 
-    @CsvBindByPosition(position = 31)
-    private String channelPosition;
+    @CsvCustomBindByPosition(position = 31, converter = DoubleConverter.class)
+    private Double channelPosition;
 
-    @CsvBindByPosition(position = 32)
-    private String yieldMeasurement;
+    @CsvCustomBindByPosition(position = 32, converter = BooleanConverter.class)
+    private Boolean yieldMeasurement;
 
-    @CsvBindByPosition(position = 33)
-    private String returnsAugerMeasurement;
+    @CsvCustomBindByPosition(position = 33, converter = DoubleConverter.class)
+    private Double returnsAugerMeasurement;
 
-    @CsvBindByPosition(position = 34)
-    private String moistureMeasurement;
+    @CsvCustomBindByPosition(position = 34, converter = BooleanConverter.class)
+    private Boolean moistureMeasurement;
 
     @CsvBindByPosition(position = 35)
     private String typeOfCrop;
@@ -137,20 +138,20 @@ public class CombineTelemetry {
     @CsvCustomBindByPosition(position = 36, converter = IntegerConverter.class)
     private Integer specificCropWeight;
 
-    @CsvBindByPosition(position = 37)
-    private String autoPilotStatus;
+    @CsvCustomBindByPosition(position = 37, converter = BooleanConverter.class)
+    private Boolean autoPilotStatus;
 
-    @CsvBindByPosition(position = 38)
-    private String cruisePilotStatus;
+    @CsvCustomBindByPosition(position = 38, converter = DoubleConverter.class)
+    private Double cruisePilotStatus;
 
-    @CsvBindByPosition(position = 39)
-    private String rateOfWork;
+    @CsvCustomBindByPosition(position = 39, converter = DoubleConverter.class)
+    private Double rateOfWork;
 
-    @CsvBindByPosition(position = 40)
-    private String yield;
+    @CsvCustomBindByPosition(position = 40, converter = DoubleConverter.class)
+    private Double yield;
 
-    @CsvBindByPosition(position = 41)
-    private String quantimeterCalibrationFactor;
+    @CsvCustomBindByPosition(position = 41, converter = DoubleConverter.class)
+    private Double quantimeterCalibrationFactor;
 
     @CsvCustomBindByPosition(position = 42, converter = IntegerConverter.class)
     private Integer separationSensitivity;

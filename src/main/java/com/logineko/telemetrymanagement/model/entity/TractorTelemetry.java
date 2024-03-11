@@ -1,5 +1,7 @@
 package com.logineko.telemetrymanagement.model.entity;
 
+import com.logineko.telemetrymanagement.mapper.util.BooleanConverter;
+import com.logineko.telemetrymanagement.mapper.util.DoubleConverter;
 import com.logineko.telemetrymanagement.mapper.util.IntegerConverter;
 import com.opencsv.bean.CsvBindByPosition;
 import com.opencsv.bean.CsvCustomBindByPosition;
@@ -24,27 +26,27 @@ public class TractorTelemetry {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @CsvBindByPosition(position=0)
+    @CsvBindByPosition(position = 0)
     @CsvDate(value = "MMM dd, yyyy, h:mm:ss a")
     private Date dateTime;
     @CsvBindByPosition(position = 1)
     private String serialNumber;
-    @CsvBindByPosition(position = 2)
-    private String GPSLongitude;
-    @CsvBindByPosition(position = 3)
-    private String GPSLatitude;
-    @CsvBindByPosition(position = 4)
+    @CsvCustomBindByPosition(position = 2, converter = DoubleConverter.class)
+    private Double GPSLongitude;
+    @CsvCustomBindByPosition(position = 3, converter = DoubleConverter.class)
+    private Double GPSLatitude;
+    @CsvCustomBindByPosition(position = 4, converter = DoubleConverter.class)
     private Double totalWorkingHours;
     @CsvCustomBindByPosition(position = 5, converter = IntegerConverter.class)
     private Integer engineSpeed;
     @CsvCustomBindByPosition(position = 6, converter = IntegerConverter.class)
     private Integer engineLoad;
-    @CsvBindByPosition(position = 7)
-    private String fuelConsumption;
-    @CsvBindByPosition(position = 8)
-    private String groundSpeedGearbox;
-    @CsvBindByPosition(position = 9)
-    private String groundSpeedRadar;
+    @CsvCustomBindByPosition(position = 7, converter = DoubleConverter.class)
+    private Double fuelConsumption;
+    @CsvCustomBindByPosition(position = 8, converter = DoubleConverter.class)
+    private Double groundSpeedGearbox;
+    @CsvCustomBindByPosition(position = 9, converter = DoubleConverter.class)
+    private Double groundSpeedRadar;
     @CsvCustomBindByPosition(position = 10, converter = IntegerConverter.class)
     private Integer coolantTemperature;
     @CsvCustomBindByPosition(position = 11, converter = IntegerConverter.class)
@@ -53,14 +55,14 @@ public class TractorTelemetry {
     private Integer speedRearPTO;
     @CsvCustomBindByPosition(position = 13, converter = IntegerConverter.class)
     private Integer currentGearShift;
-    @CsvBindByPosition(position = 14)
-    private String ambientTemperature;
+    @CsvCustomBindByPosition(position = 14, converter = DoubleConverter.class)
+    private Double ambientTemperature;
     @CsvCustomBindByPosition(position = 15, converter = IntegerConverter.class)
     private Integer parkingBrakeStatus;
     @CsvCustomBindByPosition(position = 16, converter = IntegerConverter.class)
     private Integer transverseDifferentialLockStatus;
-    @CsvBindByPosition(position = 17)
-    private String allWheelDriveStatusActive;
-    @CsvBindByPosition(position = 18)
-    private String actualStatusOfCreeperActive;
+    @CsvCustomBindByPosition(position = 17, converter = BooleanConverter.class)
+    private Boolean allWheelDriveStatusActive;
+    @CsvCustomBindByPosition(position = 18, converter = BooleanConverter.class)
+    private Boolean actualStatusOfCreeperActive;
 }
