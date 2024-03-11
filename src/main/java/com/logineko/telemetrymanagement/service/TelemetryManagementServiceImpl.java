@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -73,32 +74,55 @@ public class TelemetryManagementServiceImpl implements TelemetryManagementServic
 
     @Override
     public FilteredTelemetry filterTelemetry(List<DataFilter> dataFilter) {
-
+        // Create a new instance of FilteredTelemetry to store the filtered results
         FilteredTelemetry filteredTelemetry = new FilteredTelemetry();
 
+        // Lists to store specifications for tractors and combines separately
+        List<Specification<TractorTelemetry>> tractorSpecifications = new ArrayList<>();
+        List<Specification<CombineTelemetry>> combineSpecifications = new ArrayList<>();
+
         for (DataFilter filter : dataFilter) {
+            // Create specifications for tractors and combines based on the filter
             Specification<TractorTelemetry> tractorSpecification = createSpecification(filter, TractorTelemetry.class);
             Specification<CombineTelemetry> combineSpecification = createSpecification(filter, CombineTelemetry.class);
 
-            List<TractorTelemetry> filteredTractorTelemetry = new ArrayList<>();
+            // Check if the filter field is applicable to tractors/combines and add the specification to the list
             String lowercaseFilterField = filter.getField().toLowerCase();
             if (lowercaseTractorFields.contains(lowercaseFilterField)) {
-                filteredTractorTelemetry = tractorTelemetryRepository.findAll(tractorSpecification);
+                tractorSpecifications.add(tractorSpecification);
             }
-            List<CombineTelemetry> filteredCombineTelemetry = new ArrayList<>();
             if (lowercaseCombineFields.contains(lowercaseFilterField)) {
-                filteredCombineTelemetry = combineTelemetryRepository.findAll(combineSpecification);
+                combineSpecifications.add(combineSpecification);
             }
-
-            filteredTelemetry.getTractors().addAll(filteredTractorTelemetry);
-            filteredTelemetry.getCombines().addAll(filteredCombineTelemetry);
         }
+
+        // Combine tractor/combine specifications with 'and' logic
+        Specification<TractorTelemetry> combinedTractorSpecification = tractorSpecifications.stream()
+                .reduce(Specification::and)
+                .orElse(null);
+
+        Specification<CombineTelemetry> combinedCombineSpecification = combineSpecifications.stream()
+                .reduce(Specification::and)
+                .orElse(null);
+
+        // Retrieve filtered results for tractors/combines based on combined specifications
+        List<TractorTelemetry> filteredTractorTelemetry = combinedTractorSpecification != null ?
+                tractorTelemetryRepository.findAll(combinedTractorSpecification) :
+                Collections.emptyList();
+
+        List<CombineTelemetry> filteredCombineTelemetry = combinedCombineSpecification != null ?
+                combineTelemetryRepository.findAll(combinedCombineSpecification) :
+                Collections.emptyList();
+
+        filteredTelemetry.getTractors().addAll(filteredTractorTelemetry);
+        filteredTelemetry.getCombines().addAll(filteredCombineTelemetry);
 
         return filteredTelemetry;
     }
 
     private <T> Specification<T> createSpecification(DataFilter filter, Class<T> entityClass) {
         return (root, query, builder) -> {
+            // Initialize a predicate with conjunction (logical AND)
             Predicate predicate = builder.conjunction();
             String lowercaseField = StringUtils.uncapitalize(filter.getField());
 
