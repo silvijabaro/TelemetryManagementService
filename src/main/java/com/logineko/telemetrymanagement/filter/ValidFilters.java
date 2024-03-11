@@ -2,6 +2,7 @@ package com.logineko.telemetrymanagement.filter;
 
 import com.logineko.telemetrymanagement.model.entity.CombineTelemetry;
 import com.logineko.telemetrymanagement.model.entity.TractorTelemetry;
+import lombok.extern.log4j.Log4j2;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Log4j2
 public class ValidFilters {
 
     private static List<String> tractorFields;
@@ -66,7 +68,7 @@ public class ValidFilters {
             Field field = telemetryClass.getDeclaredField(fieldName);
             return field.getType();
         } catch (NoSuchFieldException e) {
-            e.printStackTrace();
+            log.error("Failed to get field");
             return null;
         }
     }

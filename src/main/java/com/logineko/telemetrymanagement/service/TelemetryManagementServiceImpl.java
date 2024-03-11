@@ -47,7 +47,7 @@ public class TelemetryManagementServiceImpl implements TelemetryManagementServic
         } else if (StringUtils.startsWith(fileName, COMBINE_TELEMETRY)) {
             importCombineTelemetry(file);
         } else {
-            throw new UnsupportedVehicleException("Vehicle not supported");
+            throw new UnsupportedVehicleException("Vehicle not supported.");
         }
     }
 
@@ -57,7 +57,7 @@ public class TelemetryManagementServiceImpl implements TelemetryManagementServic
             list = csvMapper.CSVToCombine(file);
         } catch (Exception e) {
             log.error("Failed to import telemetry data for Combine. Exception:", e);
-            throw new CSVMappingException("Was not able to import telemetry data for Combine");
+            throw new CSVMappingException("Was not able to import telemetry data for Combine.");
         }
         combineTelemetryRepository.saveAll(list);
     }
@@ -68,7 +68,7 @@ public class TelemetryManagementServiceImpl implements TelemetryManagementServic
             list = csvMapper.CSVToTractor(file);
         } catch (Exception e) {
             log.error("Failed to import telemetry data for Tractor. Exception:", e);
-            throw new CSVMappingException("Was not able to import telemetry data for Tractor");
+            throw new CSVMappingException("Was not able to import telemetry data for Tractor.");
         }
         tractorTelemetryRepository.saveAll(list);
     }
