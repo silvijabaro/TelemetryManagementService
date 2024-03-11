@@ -3,6 +3,7 @@ package com.logineko.telemetrymanagement.service;
 import com.logineko.telemetrymanagement.exception.CSVMappingException;
 import com.logineko.telemetrymanagement.exception.UnsupportedVehicleException;
 import com.logineko.telemetrymanagement.filter.FilterOperation;
+import com.logineko.telemetrymanagement.filter.ValidFilters;
 import com.logineko.telemetrymanagement.mapper.CSVMapper;
 import com.logineko.telemetrymanagement.model.dto.DataFilter;
 import com.logineko.telemetrymanagement.model.dto.FilteredTelemetryResponse;
@@ -22,8 +23,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.logineko.telemetrymanagement.filter.ValidFilters.combineFieldsLowerCase;
-import static com.logineko.telemetrymanagement.filter.ValidFilters.tractorFieldsLowerCase;
 
 @Service
 @Log4j2
@@ -38,6 +37,8 @@ public class TelemetryManagementServiceImpl implements TelemetryManagementServic
     private final CombineTelemetryRepository combineTelemetryRepository;
 
     private final CSVMapper csvMapper;
+
+    private final ValidFilters validFilters;
 
 
     @Override
@@ -89,10 +90,10 @@ public class TelemetryManagementServiceImpl implements TelemetryManagementServic
 
             // Check if the filter field is applicable to tractors/combines and add the specification to the list
             String lowercaseFilterField = filter.getField().toLowerCase();
-            if (tractorFieldsLowerCase.contains(lowercaseFilterField)) {
+            if (validFilters.getTractorFieldsLowerCase().contains(lowercaseFilterField)) {
                 tractorSpecifications.add(tractorSpecification);
             }
-            if (combineFieldsLowerCase.contains(lowercaseFilterField)) {
+            if (validFilters.getCombineFieldsLowerCase().contains(lowercaseFilterField)) {
                 combineSpecifications.add(combineSpecification);
             }
         }

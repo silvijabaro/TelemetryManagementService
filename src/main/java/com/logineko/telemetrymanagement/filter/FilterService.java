@@ -1,23 +1,25 @@
 package com.logineko.telemetrymanagement.filter;
 
 import com.logineko.telemetrymanagement.model.dto.DataFilter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.logineko.telemetrymanagement.filter.ValidFilters.validFilterList;
-
 @Service
+@RequiredArgsConstructor
 public class FilterService {
+    private final ValidFilters validFilters;
+
     public List<String> validateFilters(List<DataFilter> filters) {
         List<String> invalidFields = new ArrayList<>();
 
         for (DataFilter filter : filters) {
             String field = filter.getField();
-            String operation = filter.getOperation();
+            String operation = (filter.getOperation() != null) ? filter.getOperation() : FilterOperation.EQUALS.getValue();
 
-            if (!isValidFilter(validFilterList, field, operation)) {
+            if (!isValidFilter(validFilters.getValidFilterList(), field, operation)) {
                 invalidFields.add(field);
             }
         }

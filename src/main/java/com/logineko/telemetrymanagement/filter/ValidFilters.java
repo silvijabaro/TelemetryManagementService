@@ -3,6 +3,7 @@ package com.logineko.telemetrymanagement.filter;
 import com.logineko.telemetrymanagement.model.entity.CombineTelemetry;
 import com.logineko.telemetrymanagement.model.entity.TractorTelemetry;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -11,37 +12,50 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Log4j2
+@Component
 public class ValidFilters {
 
-    private static List<String> tractorFields;
-    private static List<String> combineFields;
+    private List<String> tractorFields;
+    private List<String> combineFields;
 
-    public static List<String> tractorFieldsLowerCase;
-    public static List<String> combineFieldsLowerCase;
-    public static List<ValidFilter> validFilterList;
+    private List<String> tractorFieldsLowerCase;
+    private List<String> combineFieldsLowerCase;
+    private List<ValidFilter> validFilterList;
 
-    static {
-        tractorFields = ValidFilters.getFieldNames(TractorTelemetry.class);
-        combineFields = ValidFilters.getFieldNames(CombineTelemetry.class);
+    public ValidFilters() {
+        tractorFields = getFieldNames(TractorTelemetry.class);
+        combineFields = getFieldNames(CombineTelemetry.class);
         tractorFieldsLowerCase = lowerCaseAllFields(tractorFields);
         combineFieldsLowerCase = lowerCaseAllFields(combineFields);
         validFilterList = generateValidFilters();
     }
 
-    private static List<String> getFieldNames(Class<?> telemetryClass) {
+    public List<String> getTractorFieldsLowerCase() {
+        return tractorFieldsLowerCase;
+    }
+
+    public List<String> getCombineFieldsLowerCase() {
+        return combineFieldsLowerCase;
+    }
+
+    public List<ValidFilter> getValidFilterList() {
+        return this.validFilterList;
+    }
+
+    private List<String> getFieldNames(Class<?> telemetryClass) {
         Field[] fields = telemetryClass.getDeclaredFields();
         return Arrays.stream(fields)
                 .map(Field::getName)
                 .collect(Collectors.toList());
     }
 
-    private static List<String> lowerCaseAllFields(List<String> telemetry) {
+    private List<String> lowerCaseAllFields(List<String> telemetry) {
         return telemetry.stream()
                 .map(String::toLowerCase)
                 .collect(Collectors.toList());
     }
 
-    private static List<ValidFilter> generateValidFilters() {
+    private List<ValidFilter> generateValidFilters() {
         List<ValidFilter> validFilters = new ArrayList<>();
 
         validFilters.addAll(generateValidFiltersForType(TractorTelemetry.class, tractorFields));
@@ -50,7 +64,7 @@ public class ValidFilters {
         return validFilters;
     }
 
-    private static List<ValidFilter> generateValidFiltersForType(Class<?> telemetryClass, List<String> fields) {
+    private List<ValidFilter> generateValidFiltersForType(Class<?> telemetryClass, List<String> fields) {
         List<ValidFilter> validFilters = new ArrayList<>();
 
         for (String field : fields) {
@@ -63,7 +77,7 @@ public class ValidFilters {
         return validFilters;
     }
 
-    private static Class<?> getFieldType(Class<?> telemetryClass, String fieldName) {
+    private Class<?> getFieldType(Class<?> telemetryClass, String fieldName) {
         try {
             Field field = telemetryClass.getDeclaredField(fieldName);
             return field.getType();
