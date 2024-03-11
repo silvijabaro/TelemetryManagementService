@@ -1,0 +1,238 @@
+{
+	"info": {
+		"_postman_id": "a60eb962-eef0-4f22-ba0d-f7a0433e4158",
+		"name": "Telemetry data",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Filter -Equals default operator example",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[{\r\n    \"field\":\"GrainMoistureContent\",\r\n    \"value\":10.2\r\n}]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/telemetry/filter",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"telemetry",
+						"filter"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Filter -Invalid request",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[{\r\n    \"field\":\"GrainTankUnloading\"\r\n    \r\n}]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/telemetry/filter",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"telemetry",
+						"filter"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Filter- Example 1",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n{\r\n\"field\": \"EngineSpeed\",\r\n\"operation\": \"GreaterThan\",\r\n\"value\": 1998\r\n}]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/telemetry/filter",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"telemetry",
+						"filter"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Filter - Example 2",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n{\r\n\"field\": \"EngineLoad\",\r\n\"operation\": \"Equals\",\r\n\"value\": 36\r\n},\r\n{\r\n    \"field\":\"FanSpeed\",\r\n    \"operation\":\"Equals\",\r\n    \"value\":1190\r\n},\r\n{\r\n    \"field\":\"CoolantTemperature\",\r\n    \"operation\":\"GreaterThan\",\r\n    \"value\":80\r\n}]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/telemetry/filter",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"telemetry",
+						"filter"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Filter -Invalid filter",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[{\r\n    \"field\":\"GrainTankUnloading\",\r\n    \"operation\":\"GreaterThan\",\r\n    \"value\":\"off\"\r\n}]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/telemetry/filter",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"telemetry",
+						"filter"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Import telemetry",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/Chaos Kitty/Downloads/BE Java Expertise test/LD_C7502627_20221007_20221008.csv"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/telemetry/import",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"telemetry",
+						"import"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Import telemetry - invalid file type",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/Chaos Kitty/Downloads/BE Java Expertise test/TEST/LD_Asdad.txt"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/telemetry/import",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"telemetry",
+						"import"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
