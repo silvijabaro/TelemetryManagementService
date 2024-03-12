@@ -86,13 +86,12 @@ public class TelemetryManagementServiceImpl implements TelemetryManagementServic
         for (DataFilter filter : dataFilter) {
             // Create specification based on the filter
             Specification<?> specification = createSpecification(filter);
-
-            // Check if the filter field is applicable to tractors/combines and add the specification to the list
-            String lowercaseFilterField = filter.getField().toLowerCase();
-            if (validFilters.getTractorFieldsLowerCase().contains(lowercaseFilterField)) {
+            String filterFiled = filter.getField();
+            
+            if (validFilters.getTractorFields().stream().anyMatch(filterFiled::equalsIgnoreCase)) {
                 tractorSpecifications.add((Specification<TractorTelemetry>) specification);
             }
-            if (validFilters.getCombineFieldsLowerCase().contains(lowercaseFilterField)) {
+            if (validFilters.getCombineFields().stream().anyMatch(filterFiled::equalsIgnoreCase)) {
                 combineSpecifications.add((Specification<CombineTelemetry>) specification);
             }
         }

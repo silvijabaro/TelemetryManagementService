@@ -14,27 +14,23 @@ import java.util.List;
 @Component
 public class ValidFilters {
 
-    private List<String> tractorFields;
-    private List<String> combineFields;
+    private final List<String> tractorFields;
+    private final List<String> combineFields;
 
-    private List<String> tractorFieldsLowerCase;
-    private List<String> combineFieldsLowerCase;
-    private List<ValidFilter> validFilterList;
+    public List<String> getTractorFields() {
+        return tractorFields;
+    }
+
+    public List<String> getCombineFields() {
+        return combineFields;
+    }
+
+    private final List<ValidFilter> validFilterList;
 
     public ValidFilters() {
         tractorFields = getFieldNames(TractorTelemetry.class);
         combineFields = getFieldNames(CombineTelemetry.class);
-        tractorFieldsLowerCase = lowerCaseAllFields(tractorFields);
-        combineFieldsLowerCase = lowerCaseAllFields(combineFields);
         validFilterList = generateValidFilters();
-    }
-
-    public List<String> getTractorFieldsLowerCase() {
-        return tractorFieldsLowerCase;
-    }
-
-    public List<String> getCombineFieldsLowerCase() {
-        return combineFieldsLowerCase;
     }
 
     public List<ValidFilter> getValidFilterList() {
@@ -45,12 +41,6 @@ public class ValidFilters {
         Field[] fields = telemetryClass.getDeclaredFields();
         return Arrays.stream(fields)
                 .map(Field::getName)
-                .toList();
-    }
-
-    private List<String> lowerCaseAllFields(List<String> telemetry) {
-        return telemetry.stream()
-                .map(String::toLowerCase)
                 .toList();
     }
 
