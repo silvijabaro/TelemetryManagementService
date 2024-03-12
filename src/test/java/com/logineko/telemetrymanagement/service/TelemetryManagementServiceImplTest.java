@@ -97,8 +97,8 @@ class TelemetryManagementServiceImplTest {
                 new DataFilter("Field2", "GreaterThan", 42)
         );
 
-        when(validFilters.getTractorFieldsLowerCase()).thenReturn(Arrays.asList("field1", "field2"));
-        when(validFilters.getCombineFieldsLowerCase()).thenReturn(Arrays.asList("field1", "field2"));
+        when(validFilters.getTractorFields()).thenReturn(Arrays.asList("field1", "field2"));
+        when(validFilters.getCombineFields()).thenReturn(Arrays.asList("field1", "field2"));
         when(tractorTelemetryRepository.findAll((Specification<TractorTelemetry>) any())).thenReturn(Collections.singletonList(new TractorTelemetry()));
         when(combineTelemetryRepository.findAll((Specification<CombineTelemetry>) any())).thenReturn(Collections.singletonList(new CombineTelemetry()));
 
