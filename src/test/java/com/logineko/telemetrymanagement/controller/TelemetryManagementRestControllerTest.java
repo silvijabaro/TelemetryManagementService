@@ -1,5 +1,8 @@
 package com.logineko.telemetrymanagement.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.logineko.telemetrymanagement.filter.FilterService;
+import com.logineko.telemetrymanagement.model.dto.DataFilter;
 import com.logineko.telemetrymanagement.service.TelemetryManagementService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +13,17 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -24,7 +35,13 @@ class TelemetryManagementRestControllerTest {
 
     @MockBean
     private TelemetryManagementService telemetryManagementService;
-    
+
+    @MockBean
+    private FilterService filterService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
 
     @Test
     void importTelemetry_shouldReturnOk() throws Exception {
@@ -52,6 +69,32 @@ class TelemetryManagementRestControllerTest {
         mockMvc.perform(multipart("/api/v1/telemetry/import")
                         .file(file))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void filterTelemetry_shouldReturnOk() throws Exception {
+        when(filterService.validateFilters(any())).thenReturn(Collections.emptyList());
+
+        mockMvc.perform(post("/api/v1/telemetry/filter")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("[]"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void filterTelemetry_shouldReturnBadRequestWhenInvalidFilters() throws Exception {
+        List<DataFilter> invalidFilters = Arrays.asList(
+                new DataFilter("InvalidField", "Equals", "Value"),
+                new DataFilter("AnotherInvalidField", "GreaterThan", 10));
+
+        // Assuming your filter validation returns a list of invalid fields
+        when(filterService.validateFilters(invalidFilters)).thenReturn(Arrays.asList("InvalidField", "AnotherInvalidField"));
+
+        mockMvc.perform(post("/api/v1/telemetry/filter")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(invalidFilters)))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(containsString("Invalid filters for fields: [InvalidField, AnotherInvalidField]")));
     }
 }
 
