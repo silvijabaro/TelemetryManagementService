@@ -44,7 +44,7 @@ public class TelemetryManagementRestController {
             return ResponseEntity.badRequest().body("No CSV file provided.");
         }
         String fileExtension = FilenameUtils.getExtension(file.getOriginalFilename());
-        if (!CSV_EXTENSION.equals(fileExtension.toLowerCase())) {
+        if (!CSV_EXTENSION.equalsIgnoreCase(fileExtension)) {
             return ResponseEntity.badRequest().body("Invalid file extension. Expecting CSV file.");
         }
         log.info("Importing telemetry data");

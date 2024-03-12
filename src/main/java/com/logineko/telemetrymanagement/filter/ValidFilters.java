@@ -9,7 +9,6 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Log4j2
 @Component
@@ -46,13 +45,13 @@ public class ValidFilters {
         Field[] fields = telemetryClass.getDeclaredFields();
         return Arrays.stream(fields)
                 .map(Field::getName)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private List<String> lowerCaseAllFields(List<String> telemetry) {
         return telemetry.stream()
                 .map(String::toLowerCase)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private List<ValidFilter> generateValidFilters() {

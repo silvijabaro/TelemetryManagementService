@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface TelemetryManagementService {
 
-    void importTelemetry(MultipartFile file, String fileName) throws Exception;
+    void importTelemetry(MultipartFile file, String fileName);
 
     FilteredTelemetryResponse filterTelemetry(List<DataFilter> filter);
 }

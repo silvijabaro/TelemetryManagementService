@@ -1,8 +1,8 @@
 package com.logineko.telemetrymanagement.model.entity;
 
-import com.logineko.telemetrymanagement.mapper.util.BooleanConverter;
-import com.logineko.telemetrymanagement.mapper.util.DoubleConverter;
-import com.logineko.telemetrymanagement.mapper.util.IntegerConverter;
+import com.logineko.telemetrymanagement.mapper.converter.BooleanConverter;
+import com.logineko.telemetrymanagement.mapper.converter.DoubleConverter;
+import com.logineko.telemetrymanagement.mapper.converter.IntegerConverter;
 import com.opencsv.bean.CsvBindByPosition;
 import com.opencsv.bean.CsvCustomBindByPosition;
 import com.opencsv.bean.CsvDate;

@@ -4,18 +4,21 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 public class AllowedFiltersByType {
-    private static final Map<Class<?>, List<String>> allowedFiltersByType = new HashMap<>();
+    private static final Map<Class<?>, List<String>> allowedFilters = new HashMap<>();
 
     static {
-        allowedFiltersByType.put(String.class, Arrays.asList(FilterOperation.EQUALS.getValue(), FilterOperation.CONTAINS.getValue()));
-        allowedFiltersByType.put(Integer.class, Arrays.asList(FilterOperation.EQUALS.getValue(), FilterOperation.LESS_THAN.getValue(), FilterOperation.GREATER_THAN.getValue()));
-        allowedFiltersByType.put(Double.class, Arrays.asList(FilterOperation.EQUALS.getValue(), FilterOperation.LESS_THAN.getValue(), FilterOperation.GREATER_THAN.getValue()));
-        allowedFiltersByType.put(Boolean.class, Collections.singletonList(FilterOperation.EQUALS.getValue()));
-        allowedFiltersByType.put(LocalDateTime.class, Arrays.asList(FilterOperation.EQUALS.getValue(), FilterOperation.LESS_THAN.getValue(), FilterOperation.GREATER_THAN.getValue()));
+        allowedFilters.put(String.class, Arrays.asList(FilterOperation.EQUALS.getValue(), FilterOperation.CONTAINS.getValue()));
+        allowedFilters.put(Integer.class, Arrays.asList(FilterOperation.EQUALS.getValue(), FilterOperation.LESS_THAN.getValue(), FilterOperation.GREATER_THAN.getValue()));
+        allowedFilters.put(Double.class, Arrays.asList(FilterOperation.EQUALS.getValue(), FilterOperation.LESS_THAN.getValue(), FilterOperation.GREATER_THAN.getValue()));
+        allowedFilters.put(Boolean.class, Collections.singletonList(FilterOperation.EQUALS.getValue()));
+        allowedFilters.put(LocalDateTime.class, Arrays.asList(FilterOperation.EQUALS.getValue(), FilterOperation.LESS_THAN.getValue(), FilterOperation.GREATER_THAN.getValue()));
+    }
+
+    private AllowedFiltersByType() {
     }
 
     public static List<String> getAllowedFiltersForType(Class<?> type) {
-        return allowedFiltersByType.get(type);
+        return allowedFilters.get(type);
     }
 }
 

@@ -84,17 +84,16 @@ public class TelemetryManagementServiceImpl implements TelemetryManagementServic
         List<Specification<CombineTelemetry>> combineSpecifications = new ArrayList<>();
 
         for (DataFilter filter : dataFilter) {
-            // Create specifications for tractors and combines based on the filter
-            Specification<TractorTelemetry> tractorSpecification = createSpecification(filter, TractorTelemetry.class);
-            Specification<CombineTelemetry> combineSpecification = createSpecification(filter, CombineTelemetry.class);
+            // Create specification based on the filter
+            Specification<?> specification = createSpecification(filter);
 
             // Check if the filter field is applicable to tractors/combines and add the specification to the list
             String lowercaseFilterField = filter.getField().toLowerCase();
             if (validFilters.getTractorFieldsLowerCase().contains(lowercaseFilterField)) {
-                tractorSpecifications.add(tractorSpecification);
+                tractorSpecifications.add((Specification<TractorTelemetry>) specification);
             }
             if (validFilters.getCombineFieldsLowerCase().contains(lowercaseFilterField)) {
-                combineSpecifications.add(combineSpecification);
+                combineSpecifications.add((Specification<CombineTelemetry>) specification);
             }
         }
 
@@ -122,7 +121,7 @@ public class TelemetryManagementServiceImpl implements TelemetryManagementServic
         return filteredTelemetryResponse;
     }
 
-    private <T> Specification<T> createSpecification(DataFilter filter, Class<T> entityClass) {
+    private <T> Specification<T> createSpecification(DataFilter filter) {
         return (root, query, builder) -> {
             // Initialize a predicate with conjunction (logical AND)
             Predicate predicate = builder.conjunction();

@@ -72,7 +72,7 @@ class TelemetryManagementRestControllerTest {
     }
 
     @Test
-    public void filterTelemetry_shouldReturnOk() throws Exception {
+    void filterTelemetry_shouldReturnOk() throws Exception {
         when(filterService.validateFilters(any())).thenReturn(Collections.emptyList());
 
         mockMvc.perform(post("/api/v1/telemetry/filter")
@@ -82,7 +82,7 @@ class TelemetryManagementRestControllerTest {
     }
 
     @Test
-    public void filterTelemetry_shouldReturnBadRequestWhenInvalidFilters() throws Exception {
+    void filterTelemetry_shouldReturnBadRequestWhenInvalidFilters() throws Exception {
         List<DataFilter> invalidFilters = Arrays.asList(
                 new DataFilter("InvalidField", "Equals", "Value"),
                 new DataFilter("AnotherInvalidField", "GreaterThan", 10));
