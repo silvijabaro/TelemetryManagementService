@@ -11,10 +11,9 @@ could not be parsed
 Importing was a little slow for me, Spring Batch could be used for improving speed. For filtering data I have used the
 criteria API so that I can build queries programmatically.
 I used two separate tables for Tractors and Combines (even though they share some fields it is a small amount to justify
-using a single table).I have decided to use PostgreSQL since the data is structured and won't change(and because you are
-also using it on the
-project). I would have also applied CQRS pattern and separate this project into two separate ones for reads and
-writes, telemetry-importer and telemetry-query.
+using a single table).I have decided to use PostgreSQL since the data is structured and probably won't change(and
+because you are
+also using it on the project).
 
 ## Getting started
 
