@@ -18,7 +18,8 @@ public class AllowedFiltersByType {
     }
 
     public static List<String> getAllowedFiltersForType(Class<?> type) {
-        return allowedFilters.get(type);
+        List<String> filters = allowedFilters.get(type);
+        return filters != null ? filters : Collections.emptyList();
     }
 }
 

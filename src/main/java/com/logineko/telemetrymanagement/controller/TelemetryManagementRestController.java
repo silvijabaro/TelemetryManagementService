@@ -40,7 +40,7 @@ public class TelemetryManagementRestController {
                                     schema = @Schema(implementation = String.class))),
                     @ApiResponse(responseCode = "400", description = "If invalid file format is provided")})
     public ResponseEntity<?> importTelemetry(@RequestParam("file") MultipartFile file) throws Exception {
-        if (file.isEmpty()) {
+        if (file == null || file.isEmpty()) {
             return ResponseEntity.badRequest().body("No CSV file provided.");
         }
         String fileExtension = FilenameUtils.getExtension(file.getOriginalFilename());

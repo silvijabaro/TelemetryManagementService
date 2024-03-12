@@ -12,6 +12,7 @@ import com.logineko.telemetrymanagement.model.entity.TractorTelemetry;
 import com.logineko.telemetrymanagement.repository.CombineTelemetryRepository;
 import com.logineko.telemetrymanagement.repository.TractorTelemetryRepository;
 import jakarta.persistence.criteria.Predicate;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
@@ -52,6 +53,7 @@ public class TelemetryManagementServiceImpl implements TelemetryManagementServic
         }
     }
 
+    @Transactional
     private void importCombineTelemetry(MultipartFile file) {
         List<CombineTelemetry> list;
         try {
@@ -63,6 +65,7 @@ public class TelemetryManagementServiceImpl implements TelemetryManagementServic
         combineTelemetryRepository.saveAll(list);
     }
 
+    @Transactional
     private void importTractorTelemetry(MultipartFile file) {
         List<TractorTelemetry> list;
         try {
@@ -87,7 +90,7 @@ public class TelemetryManagementServiceImpl implements TelemetryManagementServic
             // Create specification based on the filter
             Specification<?> specification = createSpecification(filter);
             String filterFiled = filter.getField();
-            
+
             if (validFilters.getTractorFields().stream().anyMatch(filterFiled::equalsIgnoreCase)) {
                 tractorSpecifications.add((Specification<TractorTelemetry>) specification);
             }
